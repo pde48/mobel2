@@ -2,8 +2,3 @@
 	path = rafaelcabatel/mobel
 	url = git@github.com:rafaelcabatel/mobel.git
 	branch = main
-
-[submodule "rafaelcabatel/connector_magento"]
-	path = rafaelcabatel/connector_magento
-	url = git@github.com:rafaelcabatel/connector_magento.git
-	branch = main
