@@ -33,7 +33,7 @@ class PurchaseOrderLine(models.Model):
         'purchase.import',
         string='Import ',
     )
-    number_puchase_supplier = fields.Char('N° Supplier', required=True, index=True, copy=False)
+    number_puchase_supplier = fields.Char('N° Supplier', required=False, index=True, copy=False,default="0")
 
     status_purchase_tracking_id = fields.Selection(selection=[
                 ('payment_received' , 'Pago recibido'),
