@@ -49,9 +49,8 @@ class SaleOrderLine(models.Model):
             ('initial', 'Order Received'),           
             ('pending', 'Pending'),
             ('not_available', 'Not Available'),
+            ('purchase_confirmed', 'Purchase Confirmed'),
             ('cancelled', 'Cancelled'),
-
-
         ], string='Status Process', copy=False, tracking=True,
         default='initial')
 
