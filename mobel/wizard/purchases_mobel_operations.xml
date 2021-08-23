@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_download_purchases" model="ir.ui.view">
+            <field name="name">Export/Import Orders</field>
+            <field name="model">operations.purchases.files</field>
+            <field name="arch" type="xml">
+                <form string="Operations">
+                    <p class="oe_grey">
+                        
+                    </p>
+                    <group>
+                        <field name="company_id" force_save="True" readonly="True"/>
+                        <field name="count" attrs="{'invisible': [('count','=', 1)]}" readonly="True"/>
+                        <field name="decision_operations" />
+                        
+                    </group>
+
+                      <group>
+		                   <group>
+		                       <field name="file" attrs="{'invisible':[('decision_operations', '!=', 'Import')],'required': [('decision_operations', '==', 'Import')]}"/>
+
+
+
+		                   </group>
+               			</group>
+                    <footer>
+                        <button name="download_file_operation" id="download_file_operation_id" string="Execute" type="object"
+                            class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+    <record id="action_download_purchases" model="ir.actions.act_window">
+        <field name="name">Export/Import Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">operations.purchases.files</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="mobel.view_download_purchases"/>
+        <field name="target">new</field>
+        <!-- TODO: check if we need this -->
+        <field name="binding_model_id" ref="purchase.model_purchase_order_line" />
+        <field name="binding_view_types">list</field>
+    </record>
+
+
+
+</odoo>

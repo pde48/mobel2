@@ -8,12 +8,7 @@ from odoo.tools.float_utils import float_compare
 class StockBackorderConfirmationLine(models.TransientModel):
     _inherit = 'stock.backorder.confirmation.line'
 
-
-
     def process_cancel_backorder(self):
-        print(self)
-        print(Hola)
-
         pickings_to_validate = self.env.context.get('button_validate_picking_ids')
         if pickings_to_validate:
             return self.env['stock.picking']\

@@ -18,16 +18,20 @@
     'website': "http://www.somosmobel.com",
     'category': 'Sales',
     'version': '0.1',
-    'depends': ['base','sale','account','stock','purchase','product','contacts','sale_stock', 'sale_management'],
+    'depends': ['base','sale','account','stock','purchase','product','contacts','sale_management'],
     'data': [
         'security/ir.model.access.csv',
+        'security/mobel_security.xml',
+        'views/res_company_view.xml',
         'views/mobel_sales_view.xml',
         'views/mobel_product_view.xml',
         'views/res_config_setting_sales.xml',
-        'views/mobel_purchase_import_view.xml',
+        'views/mobel_purchase_import_view.xml',        
         'wizard/sale_mobel_operations_views.xml',
+        'wizard/purchases_mobel_operations.xml',        
         'views/mobel_exception_purchase_tracing_view.xml',
         'data/mobel_data.xml',
+        
 
     ],
     'demo': [

@@ -43,19 +43,27 @@ class SaleOrderLine(models.Model):
    
 
     url_prd = fields.Char(related='product_template_id.url_product', store=True)
+    default_code = fields.Char(related='product_template_id.default_code', store=True)
+
 
     #('purchase_confirmed', 'Purchase Confirmed'),
     state_process = fields.Selection(selection=[
             ('initial', 'Order Received'),           
             ('pending', 'Pending'),
-            ('not_available', 'Not Available'),
             ('purchase_confirmed', 'Purchase Confirmed'),
+            ('not_available', 'Not Available'),
             ('cancelled', 'Cancelled'),
+
+
         ], string='Status Process', copy=False, tracking=True,
         default='initial')
 
     display_list = fields.Boolean(string='Display List',default=True)
+    
+    is_company_managment_sales = fields.Boolean(related='company_id.is_company_managment_sales',string='Mobel Sales Magento',default=False )
 
+    date_order_line = fields.Datetime(string='Order Date Line', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
+    
 
 
 class StatusTracking(models.Model):

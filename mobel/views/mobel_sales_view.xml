@@ -1,28 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo >
     
-    <!--
-        <data noupdate="1">
-          <delete model="ir.ui.menu" id="sale.menu_sale_quotations"/>
-    </data>
+    <menuitem id="sale.menu_sale_quotations" name="Presupuestosss" groups="mobel.make_option_invisible"/>
 
-    1) create one file in security folder [security/security.xml​]
-
-    <?xml version="1.0" encoding="utf-8"?>
-    <odoo>
-        <data noupdate="0">
-
-    <record id="make_invisible" model="res.groups">
-        <field name="name">Show Crm Menu</field>
-    </record>
-    <record model="ir.ui.menu" id="crm.crm_menu_root">
-        <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
-    </record>
-
-    </data>
-
-
-    -->
+ <data>
 
      <record id="view_order_form_inherit_sale_mobel" model="ir.ui.view">
             <field name="name">sale.order.form.sale.stock</field>
@@ -31,23 +12,28 @@
             <field name="arch" type="xml">   
                 <xpath expr="//page/field[@name='order_line']/tree/field[@name='price_unit']" position="before">            
                     <field name="status_sales_tracking_id" />
+                    <field name="date_order_line" />
+                    
                 </xpath>                
            </field>
         </record>
 
 
-   <data>
+  
     <record id="view_order_tree_line_magento" model="ir.ui.view">
         <field name="name">sale.order.tree.lines.magento</field>
         <field name="model">sale.order.line</field>
         <field name="arch" type="xml">
             <tree string="Sales Orders Line Magento" create="0" multi_edit="1" >
+                <field name="company_id" optional="hide" options="{'no_create': True}" groups="base.group_multi_company"/>
+                <field name="is_company_managment_sales" invisible="1"/>
                 <field name="status_sales_tracking_id" />
                 <field name="product_id" options='{"no_create": True}'  />
-                <field name="url_prd" options="{'no_create': True}"/>                
+                <field name="url_prd" readonly="True"/>  
+                <field name="default_code"  />              
                 <field name="order_id" optional="hide"/>
-                <field name="create_date" />
-                <field name="company_id" optional="hide" options="{'no_create': True}" groups="base.group_multi_company"/>
+                <field name="date_order_line"/>
+                <field name="create_date" invisible="True"/>                
                 <field name="order_partner_id" />
                 <field name="name" optional="hide"/>
                 <field name="price_unit" />                
@@ -58,87 +44,7 @@
             </tree>
         </field>
     </record>
-
-
-    <record id="view_order_tree_line_magento2" model="ir.ui.view">
-        <field name="model">sale.order.line</field>
-        <field name="inherit_id" ref="mobel.view_order_tree_line_magento" />
-        <field name="arch" type="xml">
-             <field name="product_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="status_sales_tracking_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="url_prd" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="order_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="create_date" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-             <field name="order_partner_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="price_unit" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="product_uom_qty" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-            
-
-
-        </field>
-    </record>
-
-    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-       <field name="domain">[('purchase_confirmed','=',True)]</field>
-    </record>
-
-  
-
-
-    <record id="sale.action_orders" model="ir.actions.act_window">
-       <field name="domain">[('state', 'not in', ('sent', 'cancel'))]</field>
-   </record>
+   
 
 
     <record id="view_order_tree_2" model="ir.ui.view">
@@ -186,7 +92,7 @@
         <field name="res_model">sale.order.line</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="view_id" ref="mobel.view_order_tree_line_magento"/>
-        <field name="domain">[('state_process', 'in', ['initial','not_available'])]</field> 
+        <field name="domain">['&amp;',('state_process', 'in', ['initial','not_available']),('is_company_managment_sales','=',True)]</field> 
         <field name="view_mode">tree</field>
         <field name="context">{}</field>
            
@@ -200,14 +106,15 @@
         <field name="model">sale.order.line</field>
         <field name="arch" type="xml">
             <tree string="Sales Orders Line Magento" multi_edit="1" >
+                <field name="company_id"/>
+                <field name="is_company_managment_sales" invisible="1"/>
                 <field name="status_sales_tracking_id" />
                 <field name="display_list" />                
                 <field name="state_process" />
                 <field name="product_id" />
                 <field name="url_prd" />                
                 <field name="order_id" optional="hide"/>
-                <field name="create_date" />
-                <field name="company_id" optional="hide" options="{'no_create': True}" groups="base.group_multi_company"/>
+                <field name="create_date" />                
                 <field name="order_partner_id" />
                 <field name="name" optional="hide"/>
                 <field name="price_unit" />                
@@ -220,84 +127,14 @@
         </field>
     </record>
 
-     <record id="view_order_tree_line_magento_pending2" model="ir.ui.view">
-        <field name="model">sale.order.line</field>
-        <field name="inherit_id" ref="mobel.view_order_tree_line_magento_pending" />
-        <field name="arch" type="xml">
-             <field name="product_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="status_sales_tracking_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="url_prd" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="order_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="create_date" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-             <field name="order_partner_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="price_unit" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-            <field name="product_uom_qty" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_sales_tracking_id == 'payment_received'; thistle: status_sales_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_sales_tracking_id == 'on_deposit_miami'; yellowgreen: status_sales_tracking_id == 'traveling_to_uruguay'; palevioletred: status_sales_tracking_id == 'arrived'; yellow: status_sales_tracking_id == 'ready_to_deliver';  white: status_sales_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-            
-
-
-        </field>
-    </record>
-
-
-
+     
     <record id="action_quotations_with_onboarding_line_magento_pending" model="ir.actions.act_window">
         <field name="name">Ordenes Pendientes/No disponibles</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.line</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="view_id" ref="mobel.view_order_tree_line_magento_pending"/>
-        <field name="domain">['&amp;',('state_process', 'in', ['pending']),('display_list','=',False)]</field> 
+        <field name="domain">['&amp;','&amp;',('state_process', 'in', ['pending']),('display_list','=',False),('is_company_managment_sales','=',True)]</field> 
         <field name="view_mode">tree</field>
         <field name="context">{}</field>
            
@@ -327,6 +164,17 @@
             </p>
         </field>
     </record>
+
+
+    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+       <field name="domain">[('purchase_confirmed','=',True)]</field>
+    </record>
+
+
+    <record id="sale.action_orders" model="ir.actions.act_window">
+       <field name="domain">[('state', 'not in', ('sent', 'cancel'))]</field>
+    </record>
+
 
     <menuitem
         id="menu_status_tracking"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+
+	<record id="make_option_invisible" model="res.groups">
+        <field name="name">Option Invisble</field>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_sale_quotations">
+        <field name="groups_id" eval="[(5,ref('mobel.make_option_invisible'))]"/>
+    </record>
+
+    
+	</data>
+
+</odoo>

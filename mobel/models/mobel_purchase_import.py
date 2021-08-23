@@ -21,6 +21,55 @@ STATES_MANAGMENT = {
 }
 
 
+MONTH_SELECTION = [
+    ('1', 'January'),
+    ('2', 'February'),
+    ('3', 'March'),
+    ('4', 'April'),
+    ('5', 'May'),
+    ('6', 'June'),
+    ('7', 'July'),
+    ('8', 'August'),
+    ('9', 'September'),
+    ('10', 'October'),
+    ('11', 'November'),
+    ('12', 'December'),
+]
+
+class ManagmentMonthYearImport(models.Model):
+    _name = 'managment.month.year.import'
+    _description = 'Managment Month Year Import'
+
+    name = fields.Char(
+        string='Managment Control Year',
+        size=64,
+        required=True,        
+    )
+    image_color_avaliable = fields.Binary('Color palette')
+
+    managment_month_ids = fields.One2many(
+        'managment.month.year.import.list',
+        'managment_month_id',
+        string='Managment Month Year',
+    )
+
+
+class ManagmentMonthYearImportList(models.Model):
+    _name = 'managment.month.year.import.list'
+    _description = 'Managment Month Year Import'
+
+    code = fields.Char(string='# Month',required=True,)
+    name = fields.Char(string='Name Month',required=True,)    
+    color = fields.Char(string='# Color',required=False,)
+    color2 = fields.Char(string='# Color 2',required=False,)
+    color3 = fields.Char(string='# Color 3',required=False,)
+
+    managment_month_id = fields.Many2one(
+        'managment.month.year.import',
+        string='Managment Month Year List',
+        ondelete='cascade',
+    )
+
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
@@ -33,7 +82,8 @@ class PurchaseOrderLine(models.Model):
         'purchase.import',
         string='Import ',
     )
-    number_puchase_supplier = fields.Char('N° Supplier', required=False, index=True, copy=False,default="0")
+    number_puchase_supplier = fields.Char('N° Supplier', required=False, index=True, copy=False)
+    purchase_ok = fields.Boolean(string='Comprado',default=False,)
 
     status_purchase_tracking_id = fields.Selection(selection=[
                 ('payment_received' , 'Pago recibido'),
@@ -50,8 +100,26 @@ class PurchaseOrderLine(models.Model):
     order_partner_id = fields.Many2one(
         'res.partner',
         related="auto_sale_order_id.partner_id",
-        string='Order Partner',
+        string='Order Partner',store=True,
     )
+
+    import_id = fields.Many2one('purchase.import',related='order_id.purchase_import_id',string='Purchase Import',store=True)
+    managment_month_id = fields.Many2one('managment.month.year.import.list',related='import_id.managment_month_id',string='Control Month',store=True)
+    color_control = fields.Char(related='import_id.managment_month_id.color',string='Color',store=True)
+    color_control2 = fields.Char(related='import_id.managment_month_id.color2',string='Color 2',store=True)
+    color_control3 = fields.Char(related='import_id.managment_month_id.color3',string='Color 3',store=True)
+
+    date_order_line = fields.Datetime(related="sale_line_id.date_order_line",string='Order Date Line', required=True, readonly=True, index=True, copy=False,store=True)
+
+    url_product = fields.Char(related='product_id.url_product', store=True)
+    default_code = fields.Char(related='product_id.default_code', store=True)
+
+
+    
+    color_id = fields.Integer(related='order_id.purchase_import_id.color',string='Color',)
+    color_name = fields.Char(related='order_id.purchase_import_id.color_name',string='Color Name',)
+    
+    is_company_managment_purchase = fields.Boolean(related='company_id.is_company_managment_sales',string='Mobel Purchases Magento',default=False )
 
 
     def write(self, vals):
@@ -79,7 +147,11 @@ class PurchaseORder(models.Model):
         string='Import ',
     )
 
-    estimated_delivery_date = fields.Date(string='Estimated Delivery Date', related="purchase_import_id.estimated_delivery_date", readonly=True)
+    estimated_delivery_date_start = fields.Date(string='Estimated Delivery Date Start', related="purchase_import_id.estimated_delivery_date_start", readonly=True)
+    estimated_delivery_date_end = fields.Date(string='Estimated Delivery Date End', related="purchase_import_id.estimated_delivery_date_end", readonly=True)
+
+
+
     
     type_import = fields.Selection(related="purchase_import_id.type_import",selection=[
             ('maritime', 'Maritime'),
@@ -99,20 +171,41 @@ class PurchaseImport(models.Model):
     _description = "Purchase Import"
     _rec_name ="name"
 
-    @api.depends('estimated_delivery_date', 'currency_id', 'company_id', 'company_id.currency_id')
+    @api.depends('estimated_delivery_date_start', 'currency_id', 'company_id', 'company_id.currency_id')
     def _compute_currency_rate(self):
         for order in self:
-            order.currency_rate = self.env['res.currency']._get_conversion_rate(order.company_id.currency_id, order.currency_id, order.company_id, order.estimated_delivery_date)
+            order.currency_rate = self.env['res.currency']._get_conversion_rate(order.company_id.currency_id, order.currency_id, order.company_id, order.estimated_delivery_date_start)
+
+    def _get_default_color(self):
+        return randint(1, 30)
     
     
     name = fields.Char('N°', required=True, index=True, copy=False, default='New Import')
+    color = fields.Integer('Color', default=_get_default_color)
+    color_name = fields.Char('Color Text',)
+
+    number_puchase_supplier = fields.Char('N° Supplier', required=True, index=True, copy=False)
+
+
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, states=READONLY_STATES,
         default=lambda self: self.env.company.currency_id.id)
     company_id = fields.Many2one('res.company', 'Company', required=True, index=True, states=READONLY_STATES, default=lambda self: self.env.company.id)
     currency_rate = fields.Float("Currency Rate", compute='_compute_currency_rate', compute_sudo=True, store=True, readonly=True, help='Ratio between the purchase order currency and the company currency')
-    estimated_delivery_date = fields.Date(
-        string='Estimated Delivery Date',required=True,
+
+    
+
+    managment_month_id = fields.Many2one(
+        'managment.month.year.import.list',
+        string='Managment Control Month',
     )
+    estimated_delivery_date_start = fields.Date(
+        string='Estimated Delivery Date Start',required=True,
+    )
+    estimated_delivery_date_end = fields.Date(
+        string='Estimated Delivery Date End',required=True,
+    )
+
+    import_month = fields.Selection(MONTH_SELECTION, default='1', required=False)
 
     type_import = fields.Selection(selection=[
             ('maritime', 'Maritime'),
@@ -127,6 +220,7 @@ class PurchaseImport(models.Model):
             ('cancel', 'Cancelled'),
         ], string='Status', required=True, copy=False, tracking=True,
         default='draft')
+
 
 
     purchase_id_ids = fields.One2many(
@@ -165,5 +259,6 @@ class PurchaseImport(models.Model):
                 seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
             vals['name'] = self_comp.env['ir.sequence'].next_by_code('purchase.import', sequence_date=seq_date) or '/'
         return super(PurchaseImport, self_comp).create(vals)
+
 
 
