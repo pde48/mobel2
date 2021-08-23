@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='currency_id']" position="before">
-                <field name="is_company_managment_sales"/>
-                <field name="is_company_managment_purchase"/>
+                <field name="is_company_managment_sales_mobel"/>
+                <field name="is_company_managment_purchase_mobel"/>
             </xpath>
         </field>
     </record>

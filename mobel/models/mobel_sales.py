@@ -60,7 +60,7 @@ class SaleOrderLine(models.Model):
 
     display_list = fields.Boolean(string='Display List',default=True)
     
-    is_company_managment_sales = fields.Boolean(related='company_id.is_company_managment_sales',string='Mobel Sales Magento',default=False )
+    is_company_managment_sales_mobel = fields.Boolean(related='company_id.is_company_managment_sales_mobel',string='Mobel Sales Magento',default=False )
 
     date_order_line = fields.Datetime(string='Order Date Line', required=True, readonly=True, index=True, copy=False, default=fields.Datetime.now)
     

@@ -119,7 +119,7 @@ class PurchaseOrderLine(models.Model):
     color_id = fields.Integer(related='order_id.purchase_import_id.color',string='Color',)
     color_name = fields.Char(related='order_id.purchase_import_id.color_name',string='Color Name',)
     
-    is_company_managment_purchase = fields.Boolean(related='company_id.is_company_managment_sales',string='Mobel Purchases Magento',default=False )
+    is_company_managment_purchase_mobel = fields.Boolean(related='company_id.is_company_managment_purchase_mobel',string='Mobel Purchases Magento',default=False )
 
 
     def write(self, vals):

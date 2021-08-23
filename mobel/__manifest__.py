@@ -31,8 +31,6 @@
         'wizard/purchases_mobel_operations.xml',        
         'views/mobel_exception_purchase_tracing_view.xml',
         'data/mobel_data.xml',
-        
-
     ],
     'demo': [
     ],

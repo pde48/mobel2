@@ -405,7 +405,7 @@
             <tree string="Puchase Order Line" create="1" multi_edit="1" editable="bottom" >
                 <field name="managment_month_id"  />  
                 <field name="status_purchase_tracking_id"/>
-                <field name="is_company_managment_purchase" invisible="True"/>                
+                <field name="is_company_managment_purchase_mobel" invisible="True"/>                
                 <field name="purchase_ok"/>                
                 <field name="order_partner_id" readonly="True"/>                
                 <field name="sale_line_id" readonly="True"/>
@@ -460,7 +460,7 @@
         <field name="name">Purchase tracking</field>
         <field name="res_model">purchase.order.line</field>
         <field name="view_mode">tree,form,kanban</field>
-         <field name="domain">[('is_company_managment_purchase','=',True)]</field> 
+         <field name="domain">[('is_company_managment_purchase_mobel','=',True)]</field> 
         <field name="view_id" ref="purchase_order_line_inherited_view_tree"/>
         <field name="search_view_id" ref="mobel.purchase_order_view_search_mobel"/>
 

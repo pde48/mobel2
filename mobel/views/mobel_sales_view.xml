@@ -26,7 +26,7 @@
         <field name="arch" type="xml">
             <tree string="Sales Orders Line Magento" create="0" multi_edit="1" >
                 <field name="company_id" optional="hide" options="{'no_create': True}" groups="base.group_multi_company"/>
-                <field name="is_company_managment_sales" invisible="1"/>
+                <field name="is_company_managment_sales_mobel" invisible="1"/>
                 <field name="status_sales_tracking_id" />
                 <field name="product_id" options='{"no_create": True}'  />
                 <field name="url_prd" readonly="True"/>  
@@ -92,7 +92,7 @@
         <field name="res_model">sale.order.line</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="view_id" ref="mobel.view_order_tree_line_magento"/>
-        <field name="domain">['&amp;',('state_process', 'in', ['initial','not_available']),('is_company_managment_sales','=',True)]</field> 
+        <field name="domain">['&amp;',('state_process', 'in', ['initial','not_available']),('is_company_managment_sales_mobel','=',True)]</field> 
         <field name="view_mode">tree</field>
         <field name="context">{}</field>
            
@@ -107,7 +107,7 @@
         <field name="arch" type="xml">
             <tree string="Sales Orders Line Magento" multi_edit="1" >
                 <field name="company_id"/>
-                <field name="is_company_managment_sales" invisible="1"/>
+                <field name="is_company_managment_sales_mobel" invisible="1"/>
                 <field name="status_sales_tracking_id" />
                 <field name="display_list" />                
                 <field name="state_process" />
@@ -134,7 +134,7 @@
         <field name="res_model">sale.order.line</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="view_id" ref="mobel.view_order_tree_line_magento_pending"/>
-        <field name="domain">['&amp;','&amp;',('state_process', 'in', ['pending']),('display_list','=',False),('is_company_managment_sales','=',True)]</field> 
+        <field name="domain">['&amp;','&amp;',('state_process', 'in', ['pending']),('display_list','=',False),('is_company_managment_sales_mobel','=',True)]</field> 
         <field name="view_mode">tree</field>
         <field name="context">{}</field>
            
