@@ -17,5 +17,119 @@
             <field name="padding">5</field>
             <field name="company_id" eval="False"/>
         </record>
+        <record id="control_year_managment_2_1" model="managment.month.year.import">
+            <field name="name">Control Managment Year Import</field>
+        </record>
+
+        <record id="control_year_managment_list_2_1" model="managment.month.year.import.list">
+            <field name="code">one</field>
+            <field name="name">January</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_2" model="managment.month.year.import.list">
+            <field name="code">two</field>
+            <field name="name">February</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_3" model="managment.month.year.import.list">
+            <field name="code">tree</field>
+            <field name="name">March</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_4" model="managment.month.year.import.list">
+            <field name="code">four</field>
+            <field name="name">April</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_5" model="managment.month.year.import.list">
+            <field name="code">five</field>
+            <field name="name">May</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_6" model="managment.month.year.import.list">
+            <field name="code">six</field>
+            <field name="name">June</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_7" model="managment.month.year.import.list">
+            <field name="code">seven</field>
+            <field name="name">July</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_8" model="managment.month.year.import.list">
+            <field name="code">eight</field>
+            <field name="name">August</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_9" model="managment.month.year.import.list">
+            <field name="code">nine</field>
+            <field name="name">September</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_10" model="managment.month.year.import.list">
+            <field name="code">ten</field>
+            <field name="name">October</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_11" model="managment.month.year.import.list">
+            <field name="code">eleven</field>
+            <field name="name">November</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+        <record id="control_year_managment_list_2_12" model="managment.month.year.import.list">
+            <field name="code">twelve</field>
+            <field name="name">December</field>
+            <field name="color">red</field>
+            <field name="color2">blue</field>
+            <field name="color3">yellow</field>           
+            <field name="managment_month_id" ref="mobel.control_year_managment_2_1"/>
+        </record>
+
+
+
     </data>
 </odoo>

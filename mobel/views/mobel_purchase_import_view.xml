@@ -2,6 +2,84 @@
 <odoo>
   <data>
 
+    <!-- Config Month year by color -->
+
+    <record id="mobel_month_managment_form_view" model="ir.ui.view">
+            <field name="name">managment.month.year.import.form.view</field>
+            <field name="model">managment.month.year.import</field>
+            <field name="arch" type="xml">
+                <form string="Information" create="false" delete="false" copy="false">
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="True" force_save="1" nolabel="1"/>
+                            </group>
+                        <group>                            
+
+                            <group>
+                                <field name="managment_month_ids" widget="one2many_list" nolabel="1">
+                                        <tree create="false" delete="false" editable="top">
+                                            <field name="code" invisible="True" force_save="1"/>
+                                            <field name="name" readonly="True" force_save="1"/>
+                                            <field name="color"/>
+                                            <field name="color2" invisible="True"/>
+                                            <field name="color3"  invisible="True"/>
+                                        </tree>
+
+                                        <form string="description" create="false" delete="false">
+                                            <group>
+                                                <field name="code" readonly="True" force_save="1"/>
+                                                <field name="name"  readonly="True" force_save="1"/>
+                                                <field name="color"/>
+                                                <field name="color2" invisible="True"/>
+                                                <field name="color3" invisible="True"/>
+                                            </group>
+                                        
+                                    </form>
+                                           
+                                </field>
+                            </group>
+
+                            <group>
+                            <field name="image_color_avaliable" widget="image" nolabel="1"/>
+                            </group>
+                            
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="mobel_month_managment_tree_view" model="ir.ui.view">
+            <field name="name">managment.month.year.import.tree.view</field>
+            <field name="model">managment.month.year.import</field>
+            <field name="arch" type="xml">
+                <tree string="Information" create="false">
+                    <field name="name"/>
+                   
+                </tree>
+            </field>
+        </record>
+
+    <record id="mobel_month_managment_action" model="ir.actions.act_window">
+        <field name="name">Managment Month Import </field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">managment.month.year.import</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+               Managment Control Month of Year
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem
+           action="mobel.mobel_month_managment_action" id="menu_mobel_month_managment_action"
+           parent="purchase.menu_purchase_config" sequence="5"/>
+
+
 
   	  <record id="purchase_import_order_view_form_inherit" model="ir.ui.view">
         <field name="name">purchase.order.form.inherit.import</field>
@@ -10,9 +88,10 @@
         <field name="arch" type="xml">
         	  <xpath expr="//field[@name='partner_id']" position="after">
         	  	<field name="required_import" invisible="1"/>
-                <field name="purchase_import_id" attrs="{'invisible': [('required_import', '=', False)]}" options="{'no_create': True,'no_edit': True}"
+                <field name="purchase_import_id" attrs="{'invisible': [('required_import', '=', False)]}" options="{'no_create': True, 'no_edit': True}"
 />
-                <field name="estimated_delivery_date" attrs="{'invisible': [('required_import', '=', False)]}"/>
+                <field name="estimated_delivery_date_start" attrs="{'invisible': [('required_import', '=', False)]}"/>
+                <field name="estimated_delivery_date_end" attrs="{'invisible': [('required_import', '=', False)]}"/>
                 <field name="type_import" attrs="{'invisible': [('required_import', '=', False)]}"/>
 
 
@@ -39,8 +118,16 @@
 	            <sheet>
 	                <group>
 	                    <field name="name" readonly="1" force_save="1"/>
-	                    <field name="estimated_delivery_date"/>	                    
-	                    <field name="type_import"/>	    
+                        
+                        <field name="managment_month_id"/>   
+	                    <field name="estimated_delivery_date_start"/>	                    
+                        <field name="estimated_delivery_date_end"/>         
+	                    <field name="type_import"/>	
+                        <field name="number_puchase_supplier"/>                         
+                        <field name="color" widget="color_picker"/> 
+                        <field name="color_name"/> 
+                        
+                            
 	                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" readonly="True"/>
                 
 	                </group>
@@ -83,18 +170,20 @@
                         filter_domain="[('name', 'ilike', self))]"/>
 
                     <field name="name" readonly="1" force_save="1"/>
-                    <field name="estimated_delivery_date"/>	                    
+                    <field name="estimated_delivery_date_start"/>	 
+                    <field name="estimated_delivery_date_end"/>  
+                                       
                     <field name="type_import"/>	    
                     <field name="company_id" groups="base.group_multi_company" />
                 
                     <separator/>
                     
-                    <filter name="estimated_delivery_date" string="Order Date" date="estimated_delivery_date"/>
+                    <filter name="estimated_delivery_date_start" string="Order Date" date="estimated_delivery_date_start"/>
                     <separator/>
                     
                     <group expand="0" string="Group By">
                         <filter string="Vendor" name="name" domain="[]" context="{'group_by': 'name'}"/>                        
-                        <filter string="Order Date" name="estimated_delivery_date" domain="[]" context="{'group_by': 'estimated_delivery_date'}"/>
+                        <filter string="Order Date" name="estimated_delivery_date_start" domain="[]" context="{'group_by': 'estimated_delivery_date_start'}"/>
                     </group>
                 </search>
             </field>
@@ -146,27 +235,32 @@
                 <kanban class="o_kanban_mobile" sample="1">
                     <field name="name" readonly="1" force_save="1"/>
 	                    <field name="name"/>
-	                    <field name="estimated_delivery_date"/>
+	                    <field name="estimated_delivery_date_start"/>
 	                    <field name="state"/>
-	                    <field name="type_import"/>	    
+	                    <field name="type_import"/>	 
+                        <field name="color" />     
 	                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                    		<progressbar field="state" colors='{"draft": "success", "posted": "warning", "cancel": "danger"}'/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                                <div class="o_kanban_record_top mb16">
-                                    <div class="o_kanban_record_headings ml-1">
-                                        <strong class="o_kanban_record_title"><span><t t-esc="record.name.value"/></span></strong>
+                         
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click o_has_icon">
+
+                                <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                    <div class="o_kanban_record_top mb16">
+                                        <div class="o_kanban_record_headings ml-1">
+                                            <strong class="o_kanban_record_title"><span><t t-esc="record.name.value"/></span></strong>
+                                        </div>
+                                        <strong><field name="type_import"/></strong>
                                     </div>
-                                    <strong><field name="type_import"/></strong>
-                                </div>
-                                <div class="o_kanban_record_bottom">
-                                    <div class="oe_kanban_bottom_left">
-                                        <span><t t-esc="record.name.value"/> <t t-esc="record.estimated_delivery_date.value and record.estimated_delivery_date.value.split(' ')[0] or False"/></span>
-                                        
-                                    </div>
-                                    <div class="oe_kanban_bottom_right">
-                                        <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'cancel': 'default', 'posted': 'success', }}"/>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span><t t-esc="record.name.value"/> <t t-esc="record.estimated_delivery_date_start.value and record.estimated_delivery_date_start.value.split(' ')[0] or False"/></span>
+                                            
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'cancel': 'default', 'posted': 'success', }}"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -204,151 +298,171 @@
         parent="mobel.menu_operations_purchase_import"
         sequence="1"/>
 
+
+     <record model="ir.ui.view" id="view_purchase_order_line_inherited_kanban">
+            <field name="name">purchase.order.line.kanban.mobel</field>
+            <field name="model">purchase.order.line</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="name" readonly="1" force_save="1"/>
+                            <field name="status_purchase_tracking_id"/>
+                            <field name="order_partner_id" readonly="True"/>                
+                            <field name="sale_line_id" readonly="True"/>
+                            <field name="product_id" readonly="True"/>
+                            <field name="product_qty" readonly="True"/>
+                            <field name="price_unit" readonly="True"/>
+                            <field name="qty_received" readonly="True" decoration-danger="qty_received==0,00" decoration-bf="qty_received==0,00 or qty_received>0,00" decoration-success="qty_received>0,00"/>
+                            <field name="qty_invoiced" readonly="True" invisible="1"/>
+                            <field name="managment_month_id"  />  
+                            <field name="color_control"  /> 
+                            <field name="color_control2"  />
+                            <field name="color_control3"  />
+   
+
+                            <field name="number_puchase_supplier"/>
+                            <field name="state" readonly="True"/>
+                            <field name="order_id" readonly="True"/>
+                            <field name="color_id" />      
+                            <field name="color_name" />                                
+                            <field name="import_id" readonly="True" />                
+                            <field name="auto_sale_order_id" readonly="True"/>
+                            <field name="company_id" readonly="True"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                         
+                            <div t-attf-class="#{kanban_color(record.color_id.raw_value)} oe_kanban_global_click o_has_icon">
+
+                                <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                    <div class="o_kanban_record_top mb16">
+                                        <div class="o_kanban_record_headings ml-1">
+                                            <strong class="o_kanban_record_title"><span><t t-esc="record.product_id.value"/></span></strong>
+                                        </div>
+                                        <strong><field name="status_purchase_tracking_id"/></strong>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span></span>
+                                            
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="order_id" />
+                                            <field name="import_id" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="purchase_order_view_search_mobel" model="ir.ui.view">
+            <field name="name">purchase.order.line.inherited.view.mobel</field>
+            <field name="model">purchase.order.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Purchase Order Line">
+                    <field name="order_id" string="Order"
+                        filter_domain="['|', '|', ('order_id', '=', self), ('order_partner_id', 'child_of', self), ('import_id', '=', self)]"/>
+                    <field name="order_partner_id" operator="child_of"/>
+                    <field name="import_id"/>
+                    <field name="order_id"/>
+                    <field name="purchase_ok"/>
+         
+                    <separator/>
+                    <filter name="purchase_ok" string="Purchase Confirmed" domain="[('purchase_ok', '!=', False)]"/>
+                    <filter name="purchase_not_ok" string="Purchase NOT Confirmed" domain="[('purchase_ok', '!=', True)]"/>
+
+                    <filter name="status_purchase_tracking_id" string="Pago recibido" domain="[('status_purchase_tracking_id', '=', 'payment_received')]"/>
+                    <filter name="status_purchase_tracking_id" string="Preparando su pedido en tienda Miami" domain="[('status_purchase_tracking_id', '=', 'preparend_send_store_miami')]"/>
+                   
+                    <filter name="status_purchase_tracking_id" string="En depósito Miami" domain="[('status_purchase_tracking_id', '=', 'on_deposit_miami')]"/>
+                    <filter name="status_purchase_tracking_id" string="Viajando a Uruguay" domain="[('status_purchase_tracking_id', '=', 'traveling_to_uruguay')]"/>
+                    <filter name="status_purchase_tracking_id" string="Arribado" domain="[('status_purchase_tracking_id', '=', 'arrived')]"/>
+                    <filter name="status_purchase_tracking_id" string="Listo para entregar" domain="[('status_purchase_tracking_id', '=', 'ready_to_deliver')]"/>
+                    <filter name="status_purchase_tracking_id" string="Entregado" domain="[('status_purchase_tracking_id', '=', 'delivered')]"/>
+
+                    <separator/>
+                    <filter name="date_planned" string="Order Planned" date="date_planned"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Order" name="order_id" domain="[]" context="{'group_by': 'order_id'}"/>
+                        <filter string="Purchase Import" name="import_id" domain="[]" context="{'group_by': 'import_id'}"/>
+                        <filter string="Order Planned" name="date_planned" domain="[]" context="{'group_by': 'date_planned'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+
       <record id="purchase_order_line_inherited_view_tree" model="ir.ui.view">
         <field name="name">purchase.order.line.inherited.view.tree</field>
         <field name="model">purchase.order.line</field>
         <field name="arch" type="xml">
             <tree string="Puchase Order Line" create="1" multi_edit="1" editable="bottom" >
+                <field name="managment_month_id"  />  
                 <field name="status_purchase_tracking_id"/>
+                <field name="is_company_managment_purchase" invisible="True"/>                
+                <field name="purchase_ok"/>                
                 <field name="order_partner_id" readonly="True"/>                
                 <field name="sale_line_id" readonly="True"/>
+                <field name="date_order_line" readonly="True"/>                
                 <field name="product_id" readonly="True"/>
+                <field name="url_product" readonly="True"/>    
+                <field name="default_code" readonly="True"/>    
+                            
                 <field name="product_qty" readonly="True"/>
                 <field name="price_unit" readonly="True"/>
                 <field name="qty_received" readonly="True" decoration-danger="qty_received==0,00" decoration-bf="qty_received==0,00 or qty_received>0,00" decoration-success="qty_received>0,00"/>
                 <field name="qty_invoiced" readonly="True" invisible="1"/>
-                <field name="date_planned"/>
+                <field name="date_planned"/>               
+                <field name="color_control"  invisible="True"/> 
+                
                 <field name="number_puchase_supplier"/>
                 <field name="state" readonly="True"/>
                 <field name="order_id" readonly="True"/>
-               	<field name="auto_sale_order_id" readonly="True"/>
-                <field name="company_id" readonly="True"/>
+                <field name="color_id" widget="color" invisible="True"/>      
+                <field name="color_name" invisible="True"/>                                
+                <field name="import_id" readonly="True"/>                
+               	<field name="auto_sale_order_id" readonly="True"  optional="hidden"/>
+                <field name="company_id" readonly="True" optional="hidden"/>
 
             </tree>
         </field>
     </record>
 
+       <!--<field name="product_id" position="attributes">
+                <attribute name="options">{
+               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
+      
+            }</attribute>-->
 
-    <record id="purchase_order_line_inherited_view_tree_2" model="ir.ui.view">
+
+   <record id="purchase_order_line_inherited_view_tree_2" model="ir.ui.view">
         <field name="model">purchase.order.line</field>
         <field name="inherit_id" ref="mobel.purchase_order_line_inherited_view_tree" />
         <field name="arch" type="xml">
-             <field name="product_id" position="attributes">
+             <field name="managment_month_id" position="attributes">
                 <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
+               "bg_color":"White; white: color_control == 'white';white: color_control == 'white';White: color_control == 'White';silver: color_control == 'Silver';silver: color_control == 'silver';black: color_control == 'Black';black: color_control == 'black';red: color_control == 'Red';red: color_control == 'red';maroon: color_control == 'Maroon';maroon: color_control == 'maroon';yellow: color_control == 'Yellow';yellow: color_control == 'yellow';Olive: color_control == 'Olive';olive: color_control == 'olive';lime: color_control == 'Lime';lime: color_control == 'Lime';green: color_control == 'Green';green: color_control == 'green';aqua: color_control == 'Aqua';aqua: color_control == 'aqua';teal: color_control == 'Teal';teal: color_control == 'teal';blue: color_control == 'Blue';blue: color_control == 'blue';navy: color_control == 'Navy';navy: color_control == 'navy';fuchsia: color_control == 'Fuchsia';fuchsia: color_control == 'fuchsia';Purple: color_control == 'Purple'; purple: color_control == 'purple';"}</attribute>
             </field>
-
-            <field name="sale_line_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-             <field name="order_partner_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-             <field name="status_purchase_tracking_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="product_qty" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="price_unit" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="qty_received" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-              <field name="qty_invoiced" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="date_planned" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="number_puchase_supplier" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="state" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-            <field name="state" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-             <field name="order_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-             <field name="auto_sale_order_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
-
-             <field name="company_id" position="attributes">
-                <attribute name="options">{
-               "bg_color": "white; plum: status_purchase_tracking_id == 'payment_received'; thistle: status_purchase_tracking_id == 'preparend_send_store_miami'; deepskyblue: status_purchase_tracking_id == 'on_deposit_miami'; yellowgreen: status_purchase_tracking_id == 'traveling_to_uruguay'; palevioletred: status_purchase_tracking_id == 'arrived'; yellow: status_purchase_tracking_id == 'ready_to_deliver';  white: status_purchase_tracking_id == 'delivered';"
-      
-            }</attribute>
-            </field>
-
         </field>
     </record>
+
+
+  
 
 
     <record id="purchase_order_line_action" model="ir.actions.act_window">
         <field name="name">Purchase tracking</field>
         <field name="res_model">purchase.order.line</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
+         <field name="domain">[('is_company_managment_purchase','=',True)]</field> 
         <field name="view_id" ref="purchase_order_line_inherited_view_tree"/>
-        <!--<field name="search_view_id" ref="purchase_order_import_view_search"/>-->
+        <field name="search_view_id" ref="mobel.purchase_order_view_search_mobel"/>
 
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

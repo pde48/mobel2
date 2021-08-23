@@ -54,22 +54,19 @@ class GenerateExceptionPurchases(models.TransientModel):
                         DEvolver Diner
 
         """
-        for po_res in self:
-            print(po_res)
-        myList = []
-        purchase_orders_lines = self.env['purchase.order.line'].browse(self._context.get('active_ids', []))
-        for rec_ in purchase_orders_lines:
-            print(rec_)
-            res_search = self.env['purchase.order.line'].search_read([('id','=',rec_.id)],['auto_sale_order_id','sale_line_id','order_id','id','product_id'])
-            for res_1 in res_search:
-                print(res_1)
-                if res_1['auto_sale_order_id'] not in myList:
-                    myList.append(res_1['auto_sale_order_id'])
+        for po_res in self:            
+            myList = []
+            purchase_orders_lines = self.env['purchase.order.line'].browse(self._context.get('active_ids', []))
+            for rec_ in purchase_orders_lines:
+                
+                res_search = self.env['purchase.order.line'].search_read([('id','=',rec_.id)],['auto_sale_order_id','sale_line_id','order_id','id','product_id'])
+                for res_1 in res_search:
+                    #print(res_1)
+                    if res_1['auto_sale_order_id'] not in myList:
+                        myList.append(res_1['auto_sale_order_id'])
             
 
-        print(myList)
-
-        print(auto_sale_order_id)
+   
 
 class SaleGeneratePurchasesPending(models.TransientModel):
     _name = "sale.generate.purchases.pending"
@@ -104,19 +101,15 @@ class SaleGeneratePurchasesPending(models.TransientModel):
 
     
     def generate_purchases_pending(self):
-        print(self)
+        
         sale_orders_lines = self.env['sale.order.line'].browse(self._context.get('active_ids', []))
         for rec_ in sale_orders_lines:
-            print(rec_)
             for rec2 in self:
-                print(rec_.state_process)
                 if(rec2.state_process == 'pending'):
                     rec_update = rec_.update({'state_process': rec2.state_process})
-                    print(rec2)
                 else:
                     if(rec2.state_process == 'not_available'):
                         rec_update = rec_.update({'state_process': rec2.state_process,'display_list': False})
-                        print(rec2)
                     else:
                         rec_update = rec_.update({'state_process': rec2.state_process})
                                 
@@ -243,14 +236,12 @@ class SaleGeneratePurchases(models.TransientModel):
         vals_gen1_item = {}
         for rec_ in sale_orders_lines:
             partner_id_purchase = self.partner_id_purchase
-            print(rec_.id)
 
             get_data_add = self.env['sale.order.line'].search_read([('id','=',rec_.id)])
             for res_2_data in get_data_add:
                 #print(res_2_data)
                 line_order_id = res_2_data['id']
 
-                print(res_2_data['order_partner_id'])
                 product_id = res_2_data['product_id'][0]
                 uom_po_qty = float(res_2_data['product_uom_qty'])
                 name = res_2_data['name']
